@@ -42,7 +42,7 @@
             </div>
 
             <div class="w-full p-1" label="Continue">
-                <Button type="button" :disabled="!panno || ! dob || !checkboxval" @click="handleButtonClick"
+                <Button type="button" :disabled="!panno  || !checkboxval" @click="handleButtonClick"
                     class=" primary_color wave-btn text-white w-full py-4 text-xl border-0  ">
                     {{ buttonText }}
                     <span v-if="isAnimating" class="wave"></span>
