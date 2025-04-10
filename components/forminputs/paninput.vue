@@ -6,7 +6,7 @@
       class="w-full py-2"
       v-model="pan"
       variant="filled"
-      @input="formatInput"
+      @input="onInput"
       maxlength="10"
       size="large"
       placeholder="AGMLS6667Z"
@@ -22,14 +22,15 @@ const emit = defineEmits(['update:modelValue']);
 
 const pan = ref(props.modelValue || '');
 
-// Format and sanitize input on all input events (works on mobile)
-const formatInput = (event) => {
-  let value = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
-  pan.value = value;
+// Handle input: allow only A-Z, 0-9 and max 10 characters
+const onInput = (event) => {
+  const rawValue = event.target.value.toUpperCase();
+  const cleaned = rawValue.replace(/[^A-Z0-9]/g, '').slice(0, 10);
+  pan.value = cleaned;
 };
 
-// Sync internal model with parent
-watch(pan, (newValue) => {
-  emit('update:modelValue', newValue);
+// Sync with v-model
+watch(pan, (newVal) => {
+  emit('update:modelValue', newVal);
 });
 </script>
