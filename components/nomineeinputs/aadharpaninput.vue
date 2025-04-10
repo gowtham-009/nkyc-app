@@ -9,7 +9,7 @@
       @input="formatInput"
       inputmode="numeric"
       maxlength="20"
-      size="large"
+   
       placeholder="Enter ID number"
       autocomplete="off"
       autocorrect="off"
