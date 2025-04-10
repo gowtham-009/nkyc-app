@@ -35,6 +35,9 @@
     animation: waveMove 0.8s ease-out forwards;
   }
   
+  .p-button{
+    background-color: none !important;
+  }
   @keyframes waveMove {
     0% {
       width: 0%;
