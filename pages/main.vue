@@ -48,14 +48,10 @@
   <div v-if="currentForm === 'bank1'">
     <BANK1  @updateDiv="handleUpdateDiv" />
   </div>
-  <div v-if="currentForm === 'bankqr2'">
-    <BANKQR2  @updateDiv="handleUpdateDiv" />
-  </div>
-  <div v-if="currentForm === 'bank3'">
-    <BANK3  @updateDiv="handleUpdateDiv" />
-  </div>
+
+
   <div v-if="currentForm === 'bank4'">
-    <BANK4  @updateDiv="handleUpdateDiv" />
+    <BANK4 :data="data"  @updateDiv="handleUpdateDiv" />
   </div>
   <div v-if="currentForm === 'photosign1'">
     <PHOTOSIGN1  @updateDiv="handleUpdateDiv" />
@@ -102,8 +98,8 @@ import OCCUPATION from '~/components/NKYC_Forms/profiledetails/occupationstatus.
 import INCOME from '~/components/NKYC_Forms/profiledetails/incomestatus.vue'
 import NOMINEE from '~/components/NKYC_Forms/profiledetails/nominee.vue'
 import BANK1 from '~/components/NKYC_Forms/bankdetails/bank1.vue'
-import BANKQR2 from '~/components/NKYC_Forms/bankdetails/bankqr2.vue'
-import BANK3 from '~/components/NKYC_Forms/bankdetails/bank3.vue'
+
+
 import BANK4 from '~/components/NKYC_Forms/bankdetails/bank4.vue'
 import PHOTOSIGN1 from '~/components/NKYC_Forms/photo&sign/photosign.vue'
 import TAKEPHOTO from '~/components/NKYC_Forms/photo&sign/takephoto.vue'
@@ -117,10 +113,12 @@ const currentDiv = ref('');
 const currentForm = ref('div1'); 
 const data = ref({});
 
-const handleUpdateDiv = (value,  newData) => {
+const handleUpdateDiv = (value,  newData={}) => {
 currentDiv.value = value;
 currentForm.value=currentDiv.value
 data.value = newData;
+
+
 
 
 

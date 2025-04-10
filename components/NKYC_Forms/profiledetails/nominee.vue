@@ -20,38 +20,26 @@
                     Relationship with nominee
                 </p>
                 <div class="w-full flex flex-col gap-2 mt-3">
-                    <Button @click="visible = true" label="Add Nominee"
-                        class="w-full py-3 primary_color text-white"></Button>
+                    <Button @click="visible = true"
+                        class="w-full py-3 primary_color text-white">
+                    {{ nomineetext }}
+                    </Button>
 
-                    <p class="text-center text-md text-blue-600 mt-2">Skip now</p>
+                    <p v-if="skip" class="text-center text-md text-blue-600 mt-2">Skip now</p>
                 </div>
             </div>
             <Dialog class="p-0" v-model:visible="visible" modal  header="Add Nominee" :style="{ width: '25rem' }">
-               
-                <Namemode  v-model:relationship="selectedRelationship" class="mt-2" />
-                <Name class="mt-2" />
-                <DOB class="mt-2" />
-                <Aadharpan class="mt-2" />
-                <Address class="mt-2" />
-                <Address2 class="mt-2" />
-                <Address3 class="mt-2" />
 
-                <div class="w-full mt-2 flex gap-2">
-                    <div class="w-full">
-                        <Pincode class="mt-2" />
-                    </div>
-                    <div class="w-full">
-                        <State class="mt-2" />
-                    </div>
-                </div>
-                <City class="mt-2" />
+                <Name v-model="name" class="mt-2" />
+                <Namemode  v-model:relationship="selectedRelationship" class="mt-2" />
+                <DOB v-model="dob" class="mt-2" />
+                <Aadharpan v-model="aadharpan" class="mt-2" />
+                <Address v-model="address" class="mt-2" />
+              
+             
 
                 <div class="w-full mt-3">
-                    <Button label="Save" class="primary_color w-full text-white py-2"></Button>
-
-                    <p class="text-center py-2 text-blue-600 font-medium">
-                        Add another nominee
-                    </p>
+                    <Button :disabled="!selectedRelationship || !name || !dob || !aadharpan || !address " label="Save" @click="nomineesave()" class="primary_color w-full text-white py-2"></Button>
                 </div>
             </Dialog>
 
@@ -83,25 +71,26 @@ import Name from '~/components/nomineeinputs/nameinput.vue';
 import DOB from '~/components/forminputs/dateinput.vue'
 import Aadharpan from '~/components/nomineeinputs/aadharpaninput.vue';
 import Address from '~/components/nomineeinputs/address.vue';
-import Address2 from '~/components/nomineeinputs/address2.vue';
-import Address3 from '~/components/nomineeinputs/address3.vue';
-import Pincode from '~/components/nomineeinputs/pincode.vue';
-import State from '~/components/nomineeinputs/state.vue'
-import City from '~/components/nomineeinputs/city.vue'
 
 
+const skip=ref(true);
 const visible = ref(false);
 const emit=defineEmits(['updateDiv']);
 const deviceHeight = ref(0);
 const isAnimating = ref(false);
 const buttonText = ref("Continue");
+const nomineetext = ref("Add Nominee");
 
 const selectedRelationship = ref(null);
+const name = ref('');
+const dob = ref('');
+const aadharpan = ref('');
+const address = ref('');
+
 
 const back = () => {
     emit('updateDiv', 'income');
 };
-
 
 
 onMounted(() => {
@@ -110,6 +99,32 @@ onMounted(() => {
         deviceHeight.value = window.innerHeight;
     });
 });
+
+
+
+
+const nomineesave=()=>{
+    console.log("Nominee Details:")
+    console.log("Relationship: ",selectedRelationship.value)
+    console.log("Name: ",name.value)
+    console.log("DOB: ",dob.value)
+    console.log("Aadhar/PAN: ",aadharpan.value)
+    console.log("Address: ",address.value)
+
+
+    nomineetext.value='Nominee Saved'
+    visible.value=false
+    skip.value=false
+}
+
+const handleButtonClick=()=>{
+    isAnimating.value = true;
+    setTimeout(() => {
+        isAnimating.value = false;
+        buttonText.value = "Continue";
+        emit('updateDiv', 'submission','2');
+    }, 2000); // Adjust the duration as needed
+};
 </script>
 <style>
 .p-dialog-header{

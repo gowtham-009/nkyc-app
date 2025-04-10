@@ -8,10 +8,8 @@
       variant="filled"
       size="large"
       placeholder="AGMLS6667Z"
+      @input="onInput"
       maxlength="10"
-      inputmode="text"
-      @keypress="allowAlphaNumeric"
-      @input="enforceMaxLength"
     />
   </div>
 </template>
@@ -24,24 +22,14 @@ const emit = defineEmits(['update:modelValue']);
 
 const pan = ref(props.modelValue || '');
 
-// Sync with parent
+// Emit changes to parent
 watch(pan, (newVal) => {
   emit('update:modelValue', newVal);
 });
 
-// Allow only alphanumeric characters
-function allowAlphaNumeric(event) {
-  const key = event.key;
-  if (!/^[a-zA-Z0-9]$/.test(key)) {
-    event.preventDefault();
-  }
-}
-
-// Enforce max length manually for edge cases (like pasting)
-function enforceMaxLength(event) {
-  const value = event.target.value;
-  if (value.length > 10) {
-    pan.value = value.slice(0, 10);
-  }
-}
+// Handle input to restrict to alphanumeric and 10 characters
+const onInput = (event) => {
+  const value = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+  pan.value = value;
+};
 </script>

@@ -27,7 +27,7 @@
                         </div>
 
                         <div>
-                            <p class="text-medium text-lg text-gray-500">Bank Name</p>
+                            <p class="text-medium text-lg text-gray-500">{{ bankname }}</p>
                         </div>
 
                     </div>
@@ -37,7 +37,7 @@
                             <p class="text-md text-left text-gray-500 font-normal">Acc.No.</p>
                         </div>
                         <div class="w-full p-1" >
-                            <p class="text-lg text-right text-blue-900 font-medium dark:text-gray-400">XXXXXXXXX134</p>
+                            <p class="text-lg text-right text-blue-900 font-medium dark:text-gray-400">{{maskedAccNo}}</p>
                         </div>
                     </div>
                     <div class="w-full flex p-1" >
@@ -45,15 +45,24 @@
                             <p class="text-md text-left text-gray-500 font-normal">IFSC Code</p>
                         </div>
                         <div class="w-full p-1" >
-                            <p class="text-lg text-right text-blue-900 font-medium dark:text-gray-400">IOBXXXXXXX134</p>
+                            <p class="text-lg text-right text-blue-900 font-medium dark:text-gray-400">{{ifsccode}}</p>
                         </div>
                     </div>
                     <div class="w-full flex p-1" >
                         <div class="w-full p-1" >
-                            <p class="text-md text-left text-gray-500 font-normal">Branch</p>
+                            <p class="text-md text-left text-gray-500 font-normal">MICR CODE</p>
                         </div>
                         <div class="w-full p-1" >
-                            <p class="text-lg text-right text-blue-900 font-medium dark:text-gray-400">DIGITAL BANKING SERVICE</p>
+                            <p class="text-lg text-right text-blue-900 font-medium dark:text-gray-400">{{ MICR }}</p>
+                        </div>
+                    </div>
+
+                    <div class="w-full flex p-1" >
+                        <div class="w-full p-1" >
+                            <p class="text-md text-left text-gray-500 font-normal">Address</p>
+                        </div>
+                        <div class="w-full p-1" >
+                            <p class="text-lg text-right text-blue-900 font-medium dark:text-gray-400">{{ address }}</p>
                         </div>
                     </div>
                 </div>
@@ -80,9 +89,31 @@
 </template>
 <script setup>
 import ThemeSwitch from '~/components/darkmode/darkmode.vue'
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, defineProps } from 'vue';
 
 const emit = defineEmits(['updateDiv']);
+
+const props = defineProps({
+  data: {
+    type: Array,
+    required: true
+  }
+})
+
+
+const bankname = ref(props.data[0].bankname || '');
+const accno = ref(props.data[0].accno || '');
+const ifsccode = ref(props.data[0].ifsc || '');
+const MICR = ref(props.data[0].micr || '');
+const address = ref(props.data[0].address || '');
+
+
+const maskedAccNo = computed(() => {
+  const val = accno.value
+  const last4 = val.slice(-4)
+  const masked = 'x'.repeat(val.length - 4) + last4
+  return masked
+})
 const deviceHeight = ref(0);
 const buttontext =ref('Continue')
 const isAnimating = ref(false);
@@ -91,6 +122,7 @@ onMounted(() => {
     window.addEventListener('resize', () => {
         deviceHeight.value = window.innerHeight;
     });
+
 });
 
 

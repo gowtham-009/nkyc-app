@@ -16,8 +16,10 @@
   
   <script setup>
   import { ref } from 'vue';
-  
-  const name = ref('');
+  const props = defineProps(['modelValue']);
+  const emit = defineEmits(['update:modelValue']);
+  const name = ref(props.modelValue || '');
+
   
   // Allow only A-Z, space, and dot (.)
   const allowAlphaOnly = (event) => {
@@ -32,5 +34,9 @@
   const formatName = () => {
     name.value = name.value.toUpperCase().replace(/[^A-Z.\s]/g, '');
   };
+
+  watch(name, (newValue) => {
+  emit('update:modelValue', newValue);
+});
   </script>
   

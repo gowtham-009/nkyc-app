@@ -67,7 +67,7 @@ const back = () => {
     emit('updateDiv', 'occupation');
 };
 
-//'2'
+
 
 onMounted(() => {
     deviceHeight.value = window.innerHeight;
