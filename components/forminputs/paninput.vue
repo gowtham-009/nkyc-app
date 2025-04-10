@@ -8,7 +8,9 @@
       variant="filled"
       size="large"
       placeholder="AGMLS6667Z"
-      :counter="16"
+      :maxlength="10"
+      @keypress="onKeyPress"
+      @input="onInput"
     />
   </div>
 </template>
@@ -23,19 +25,29 @@ const emit = defineEmits(['update:modelValue']);
 
 const localPan = ref(props.modelValue || '');
 
-// Format input and sync with parent
+// Sync with parent when localPan changes
 watch(localPan, (newVal) => {
-  const formatted = newVal.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 16);
-  if (formatted !== newVal) {
-    localPan.value = formatted;
-  }
-  emit('update:modelValue', formatted);
+  emit('update:modelValue', newVal);
 });
 
-// Watch for changes from parent and update local state
+// Sync from parent when modelValue changes
 watch(() => props.modelValue, (newVal) => {
   if (newVal !== localPan.value) {
     localPan.value = newVal || '';
   }
 });
+
+// Allow only A-Z and 0-9 at keypress
+const onKeyPress = (e) => {
+  const char = e.key.toUpperCase();
+  const isValid = /^[A-Z0-9]$/.test(char);
+  if (!isValid || localPan.value.length >= 10) {
+    e.preventDefault();
+  }
+};
+
+// Just to ensure formatting on paste or autofill
+const onInput = () => {
+  localPan.value = localPan.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+};
 </script>
