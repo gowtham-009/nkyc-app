@@ -1,11 +1,17 @@
 <template>
   <div class="w-full">
     <label for="pan_label" class="text-gray-600 text-lg font-normal">PAN</label>
-    <InputText 
-      v-model="pan" 
-      @keypress="handleKeyPress"
-      @input="convertToUppercase"
-      maxlength="10" 
+    <InputText
+      id="pan_label"
+      class="w-full py-2"
+      v-model="pan"
+      variant="filled"
+      size="large"
+      placeholder="AGMLS6667Z"
+      maxlength="10"
+      inputmode="text"
+      @keypress="allowAlphaNumeric"
+      @input="enforceMaxLength"
     />
   </div>
 </template>
@@ -18,24 +24,24 @@ const emit = defineEmits(['update:modelValue']);
 
 const pan = ref(props.modelValue || '');
 
-// Convert input to uppercase
-const convertToUppercase = () => {
-  pan.value = pan.value.toUpperCase();
-};
-
-// Only allow alphanumeric characters
-const handleKeyPress = (event) => {
-  const charCode = event.charCode;
-  // Allow only A-Z, a-z, 0-9
-  if (!(charCode >= 48 && charCode <= 57) && // 0-9
-      !(charCode >= 65 && charCode <= 90) && // A-Z
-      !(charCode >= 97 && charCode <= 122)) { // a-z
-    event.preventDefault();
-  }
-};
-
 // Sync with parent
 watch(pan, (newVal) => {
   emit('update:modelValue', newVal);
 });
+
+// Allow only alphanumeric characters
+function allowAlphaNumeric(event) {
+  const key = event.key;
+  if (!/^[a-zA-Z0-9]$/.test(key)) {
+    event.preventDefault();
+  }
+}
+
+// Enforce max length manually for edge cases (like pasting)
+function enforceMaxLength(event) {
+  const value = event.target.value;
+  if (value.length > 10) {
+    pan.value = value.slice(0, 10);
+  }
+}
 </script>
