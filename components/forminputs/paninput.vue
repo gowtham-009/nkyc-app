@@ -4,12 +4,11 @@
     <InputText
       id="pan_label"
       class="w-full py-2"
-      v-model="pan"
+      v-model="localPan"
       variant="filled"
       size="large"
       placeholder="AGMLS6667Z"
-      @keypress="handleKeyPress"
-      @input="handleInput"
+      :counter="16"
     />
   </div>
 </template>
@@ -17,30 +16,26 @@
 <script setup>
 import { ref, watch } from 'vue';
 
-const props = defineProps(['modelValue']);
+const props = defineProps({
+  modelValue: String
+});
 const emit = defineEmits(['update:modelValue']);
 
-const pan = ref(props.modelValue || '');
+const localPan = ref(props.modelValue || '');
 
-// Restrict keypress to alphanumeric and max 10 characters
-const handleKeyPress = (event) => {
-  const char = event.key.toUpperCase();
-  const isAlphanumeric = /^[A-Z0-9]$/.test(char);
-
-  if (!isAlphanumeric || pan.value.length >= 10) {
-    event.preventDefault(); // Block invalid character or length overflow
+// Format input and sync with parent
+watch(localPan, (newVal) => {
+  const formatted = newVal.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 16);
+  if (formatted !== newVal) {
+    localPan.value = formatted;
   }
-};
+  emit('update:modelValue', formatted);
+});
 
-// Convert input to uppercase (if pasted or autofill)
-const handleInput = (event) => {
-  let value = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  if (value.length > 10) value = value.slice(0, 10);
-  pan.value = value;
-};
-
-// Sync with parent
-watch(pan, (newVal) => {
-  emit('update:modelValue', newVal);
+// Watch for changes from parent and update local state
+watch(() => props.modelValue, (newVal) => {
+  if (newVal !== localPan.value) {
+    localPan.value = newVal || '';
+  }
 });
 </script>
