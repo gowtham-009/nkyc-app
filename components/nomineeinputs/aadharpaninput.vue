@@ -1,6 +1,6 @@
 <template>
     <div class="w-full">
-      <label for="pan_label" class="text-gray-500 text-lg font-normal">Nominee's PAN or Aadhaar</label>
+      <label for="pan_label" class="text-gray-500 text-lg font-normal">Nominee's Id proof no</label>
       <InputText
         id="pan_label"
         class="w-full py-2"
@@ -10,7 +10,7 @@
         @keypress="allowAlphanumeric"
         maxlength="10"
         size="large"
-        placeholder="Enter pan or aadhaar no"
+        placeholder="Enter ID number"
       />
     </div>
   </template>

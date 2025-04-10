@@ -30,16 +30,42 @@
             </div>
             <Dialog class="p-0" v-model:visible="visible" modal  header="Add Nominee" :style="{ width: '25rem' }">
 
-                <Name v-model="name" class="mt-2" />
-                <Namemode  v-model:relationship="selectedRelationship" class="mt-2" />
-                <DOB v-model="dob" class="mt-2" />
-                <Aadharpan v-model="aadharpan" class="mt-2" />
-                <Address v-model="address" class="mt-2" />
+             <div class="w-full">
+                <Name v-model="name"  />
+             </div>
+               <div class="w-full mt-2">
+                <Namemode  v-model:relationship="selectedRelationship"  />
+               </div>
+               <div class="w-full mt-2">
+                <DOB v-model="dob"  />
+               </div>
+               <div class="w-full mt-2">
+                <span class="text-lg text-gray-500">Select Id proof</span>
+                <Proof v-model:selected="idProof" />
+               </div>
+                <div class="w-full mt-2">
+                    <Aadharpan v-model="aadharpan"  />
+                </div>
+               
+               <div class="w-full mt-2">
+                <Address v-model="address"  />
+               </div>
               
-             
+               <div class="w-full mt-2">
+                <span class="text-lg text-gray-500">Available shares {{ sharevalue }}</span>
+                <Sharevalue v-model="shareval"/>
+               </div>
+
+               <!-- <div class="w-full mt-2">
+                <span class="text-gray-500 text-lg">
+                    Upload a file (optional)
+                </span>
+                <FileUpload ref="fileupload" class="text-white" mode="basic" name="demo[]" url="/api/upload" accept="image/*" :maxFileSize="1000000" @upload="onUpload" />
+               </div>
+              -->
 
                 <div class="w-full mt-3">
-                    <Button :disabled="!selectedRelationship || !name || !dob || !aadharpan || !address " label="Save" @click="nomineesave()" class="primary_color w-full text-white py-2"></Button>
+                    <Button :disabled="!selectedRelationship || !name || !dob || !aadharpan || !address || !idProof || !shareval " label="Save" @click="nomineesave()" class="primary_color w-full text-white py-2"></Button>
                 </div>
             </Dialog>
 
@@ -68,11 +94,13 @@ import { ref, onMounted } from 'vue';
 import ThemeSwitch from '~/components/darkmode/darkmode.vue';
 import Namemode from '~/components/nomineeinputs/dropdown.vue';
 import Name from '~/components/nomineeinputs/nameinput.vue';
-import DOB from '~/components/forminputs/dateinput.vue'
+import DOB from '~/components/nomineeinputs/dateinput.vue'
 import Aadharpan from '~/components/nomineeinputs/aadharpaninput.vue';
 import Address from '~/components/nomineeinputs/address.vue';
-
-
+import Proof from '~/components/nomineeinputs/proofcheckbox.vue';
+import Sharevalue from '~/components/nomineeinputs/sharevalue.vue';
+const sharevalue=ref(100)
+const shareval=ref('')
 const skip=ref(true);
 const visible = ref(false);
 const emit=defineEmits(['updateDiv']);
@@ -80,14 +108,14 @@ const deviceHeight = ref(0);
 const isAnimating = ref(false);
 const buttonText = ref("Continue");
 const nomineetext = ref("Add Nominee");
-
+const idProof = ref('')
 const selectedRelationship = ref(null);
 const name = ref('');
 const dob = ref('');
 const aadharpan = ref('');
 const address = ref('');
 
-
+const fileupload = ref();
 const back = () => {
     emit('updateDiv', 'income');
 };

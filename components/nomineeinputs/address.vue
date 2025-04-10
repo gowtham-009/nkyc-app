@@ -1,17 +1,7 @@
 <template>
     <div class="w-full">
       <label for="pan_label" class="text-gray-500 text-lg font-normal">Address line 1</label>
-      <InputText
-        id="pan_label"
-        class="w-full py-2"
-        v-model="address"
-        variant="filled"
-        @input="formatInput"
-        @keypress="allowCustomCharacters"
-        maxlength="100"
-        size="large"
-        placeholder="Nominee's address line 1"
-      />
+      <Textarea v-model="address" rows="5" class="w-full" cols="30" placeholder="Eg. No.64, Area, Post, City, State, Country" />
     </div>
   </template>
   
