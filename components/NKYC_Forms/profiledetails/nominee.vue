@@ -26,15 +26,12 @@
                     <p class="text-center text-md text-blue-600 mt-2">Skip now</p>
                 </div>
             </div>
-            <Dialog class="p-0" v-model:visible="visible" modal :style="{ width: '25rem' }">
-                <div class="w-full flex justify-between  items-center p-1 mb-0">
-                    <span class="text-2xl text-medium">Add nominee</span>
-                    <span><i class="pi pi-times"></i></span>
-                </div>
-                <Namemode class="mt-2" />
+            <Dialog class="p-0" v-model:visible="visible" modal  header="Add Nominee" :style="{ width: '25rem' }">
+               
+                <Namemode  v-model:relationship="selectedRelationship" class="mt-2" />
                 <Name class="mt-2" />
+                <DOB class="mt-2" />
                 <Aadharpan class="mt-2" />
-
                 <Address class="mt-2" />
                 <Address2 class="mt-2" />
                 <Address3 class="mt-2" />
@@ -49,7 +46,7 @@
                 </div>
                 <City class="mt-2" />
 
-                <div class="w-full mt-2">
+                <div class="w-full mt-3">
                     <Button label="Save" class="primary_color w-full text-white py-2"></Button>
 
                     <p class="text-center py-2 text-blue-600 font-medium">
@@ -83,7 +80,7 @@ import { ref, onMounted } from 'vue';
 import ThemeSwitch from '~/components/darkmode/darkmode.vue';
 import Namemode from '~/components/nomineeinputs/dropdown.vue';
 import Name from '~/components/nomineeinputs/nameinput.vue';
-
+import DOB from '~/components/forminputs/dateinput.vue'
 import Aadharpan from '~/components/nomineeinputs/aadharpaninput.vue';
 import Address from '~/components/nomineeinputs/address.vue';
 import Address2 from '~/components/nomineeinputs/address2.vue';
@@ -91,12 +88,15 @@ import Address3 from '~/components/nomineeinputs/address3.vue';
 import Pincode from '~/components/nomineeinputs/pincode.vue';
 import State from '~/components/nomineeinputs/state.vue'
 import City from '~/components/nomineeinputs/city.vue'
+
+
 const visible = ref(false);
 const emit=defineEmits(['updateDiv']);
 const deviceHeight = ref(0);
 const isAnimating = ref(false);
 const buttonText = ref("Continue");
 
+const selectedRelationship = ref(null);
 
 const back = () => {
     emit('updateDiv', 'income');

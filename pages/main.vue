@@ -129,7 +129,5 @@ data.value = newData;
 </script>
 
 <style >
-.p-button-text.p-button-secondary{
-  display: none !important;
-}
+
 </style>

@@ -1,41 +1,21 @@
 <template>
-  <label for="dob">DOB</label>
-<div class="relative w-full">
-
-  <input
-    ref="datepicker"
-    type="text"
-    class="bd outline-none bg-gray-50 p-2 py-3 pr-10 rounded-lg w-full"
-    placeholder="As per PAN - DD/MM/YYYY"
-  />
-  <!-- Icon positioned absolutely inside the input -->
-  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
-    📅
-  </span>
-</div>
+  <div class="w-full">
+    <label for="dob">DOB</label>
+    <DatePicker v-model="date" showIcon dateFormat="dd/mm/yy" class="w-full" placeholder="As per PAN DOB - DD/MM/YYYY"/>
+  </div>
 </template>
 
 <script setup>
-import { onMounted, ref, defineEmits  } from 'vue'
-import flatpickr from 'flatpickr'
-import 'flatpickr/dist/flatpickr.min.css'
-
-const datepicker = ref(null)
-const emit = defineEmits(['update:dob']) // define emitted event
-
-onMounted(() => {
-flatpickr(datepicker.value, {
-  dateFormat: 'd-m-Y',
-  allowInput: false, // Prevent typing
-  onChange: function(selectedDates, dateStr) {
-    emit('update:dob', dateStr) // emit selected date to parent
-  }
-})
-})
+ import { ref } from 'vue';
+const props = defineProps(['modelValue']);
+  const emit = defineEmits(['update:modelValue']);
+  
+  const date = ref(props.modelValue || '');
+  watch(date, (newValue) => {
+    emit('update:modelValue', newValue);
+  });
 </script>
 
-<style>
-.bd{
-  border: 1px solid rgb(173, 173, 173);
-}
+<style >
+
 </style>

@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="w-full mt-2">
-                    <DOB v-model="dob"/>
+                    <DOB v-model="dateval"/>
                   
                 </div>
 
@@ -42,7 +42,7 @@
             </div>
 
             <div class="w-full p-1" label="Continue">
-                <Button type="button" :disabled="!panno  || !checkboxval" @click="handleButtonClick"
+                <Button type="button" :disabled="!panno || !dateval || !checkboxval" @click="handleButtonClick"
                     class=" primary_color wave-btn text-white w-full py-4 text-xl border-0  ">
                     {{ buttonText }}
                     <span v-if="isAnimating" class="wave"></span>
@@ -69,7 +69,7 @@ const buttonText = ref("Continue");
 const panno = ref('')
 const dateval = ref('')
 const checkboxval = ref('')
-const dob = ref('')
+
 
 onMounted(() => {
     deviceHeight.value = window.innerHeight;
