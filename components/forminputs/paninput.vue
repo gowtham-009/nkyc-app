@@ -9,6 +9,10 @@
       size="large"
       placeholder="AGMLS6667Z"
       @input="onInput"
+      inputmode="text"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="characters"
       maxlength="10"
     />
   </div>
@@ -20,16 +24,27 @@ import { ref, watch } from 'vue';
 const props = defineProps(['modelValue']);
 const emit = defineEmits(['update:modelValue']);
 
-const pan = ref(props.modelValue || '');
+const pan = ref((props.modelValue || '').toUpperCase());
 
-// Emit changes to parent
+// Emit cleaned value to parent
 watch(pan, (newVal) => {
   emit('update:modelValue', newVal);
 });
 
-// Handle input to restrict to alphanumeric and 10 characters
+// Clean input — handles all special cases (voice input, paste, etc.)
 const onInput = (event) => {
-  const value = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
-  pan.value = value;
+  const rawValue = event.target.value;
+
+  // Keep only A-Z and 0-9, force uppercase, max 10 chars
+  const cleaned = rawValue
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, '')
+    .slice(0, 10);
+
+  // Update model and input field
+  pan.value = cleaned;
+
+  // Update the input element's visible value immediately (needed for mobile)
+  event.target.value = cleaned;
 };
 </script>
