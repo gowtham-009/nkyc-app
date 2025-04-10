@@ -6,8 +6,7 @@
       class="w-full py-2"
       v-model="pan"
       variant="filled"
-      @keydown="onKeyDown"
-      @input="onInput" 
+      @input="onInput"
       maxlength="10"
       size="large"
       placeholder="AGMLS6667Z"
@@ -23,33 +22,14 @@ const emit = defineEmits(['update:modelValue']);
 
 const pan = ref(props.modelValue || '');
 
-// ✅ Only allow alphanumeric keys and control keys (Backspace, Delete, Arrows, etc.)
-const onKeyDown = (event) => {
-  const key = event.key;
-
-  const isAlphanumeric = /^[a-zA-Z0-9]$/.test(key);
-  const isControlKey = [
-    'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'
-  ].includes(key);
-
-  if (!isAlphanumeric && !isControlKey) {
-    event.preventDefault(); // Block special characters
-    return;
-  }
-
-  // Block input if already 10 characters and not a control key
-  if (isAlphanumeric && pan.value.length >= 10) {
-    event.preventDefault();
-  }
-};
-
-// ✅ Fallback cleanup for mobile (ensures input is clean if keydown misses)
+// ✅ Clean input: Uppercase, Alphanumeric only, max 10 chars
 const onInput = (event) => {
-  const clean = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
-  pan.value = clean;
+  const raw = event.target.value;
+  const cleaned = raw.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+  pan.value = cleaned;
 };
 
-// Sync with v-model
+// Sync with parent
 watch(pan, (newVal) => {
   emit('update:modelValue', newVal);
 });
