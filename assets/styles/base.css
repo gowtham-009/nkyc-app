@@ -11,9 +11,9 @@ body{
     --p-primary-500: oklch(0.55 0.195 277.366);
     --p-primary-600: oklch(0.45 0.195 277.366);
     --p-primary-700: oklch(0.398 0.195 277.366); /* Your preferred color */
-    /* --p-primary-800: oklch(0.35 0.195 277.366); */
-    /* --p-primary-900: oklch(0.25 0.195 277.366); */
-    /* --p-primary-950: oklch(0.15 0.195 277.366); */
+    --p-primary-800: oklch(0.35 0.195 277.366); 
+    --p-primary-900: oklch(0.25 0.195 277.366);
+     --p-primary-950: oklch(0.15 0.195 277.366);
     
     --p-surface-0: oklch(1 0 0);
     --p-surface-50: oklch(0.98 0 0);
